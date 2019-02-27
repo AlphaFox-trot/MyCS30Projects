@@ -22,33 +22,33 @@ function setup() {
 function draw() {
   fill(colour1, colour2, colour3);
   ellipse(x, y, size, size);
-
-  if (key == 'w'){
-    if (y <= windowHeight(size/2)){
-      y = y + 5;
+  if  (keyIsPressed){
+    if (key === 'w'){
+      if (y >= 0 + (size/2)){
+        y = y - 5;
+      }
+    }
+    if (key === 'a'){
+      if (x >= 0 + (size/2)){
+        x = x - 5;
+      }
+    }
+    if (key === 's'){
+      if (y <= windowHeight - (size/2)){
+        y = y + 5;
+      }
+    }
+    if (key === 'd'){
+      if (x <= windowWidth - (size/2)){
+        x = x + 5;
+      }
+    }
+    if (key === 'q'){
+      size--;
+    }
+    if (key === 'e'){
+      size++;
     }
   }
-  else if (key == 'a'){
-    if (x >= (size/2)){
-      x = x - 5;
-    }
-  }
-  else if (key == 's'){
-    if (y >= (size/2)){
-      y = y - 5;
-    }
-  }
-  else if (key == 'd'){
-    if (x <= windowWidth - (size/2)){
-      x = x + 5;
-    }
-  }
-  else if (key == 'q'){
-    size--;
-  }
-  else if (key == 'e'){
-    size++;
-  }
-  
 }
 
