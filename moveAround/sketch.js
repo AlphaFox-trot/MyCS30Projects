@@ -6,15 +6,11 @@
 // use r g b y p and t to change your colour
 // use z and x to change the background
 // use c and v to change to white or black
-// use space to randomise your colour
+// use the mouse button to randomise your colour
 
-let x;
-let y;
+let x, y;
 let direction;
 let size;
-let colour1;
-let colour2;
-let colour3;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -23,10 +19,10 @@ function setup() {
   size = 50;
   background(225);
   direction = 1;
+  fill(0, 0, 0);
 }
 
 function draw() {
-  fill(colour1, colour2, colour3);
   ellipse(x, y, size);
   if  (keyIsPressed){
     if (key === "w"){
@@ -85,9 +81,12 @@ function draw() {
     if (key === "v"){
       background(300);
     }
-    if (key === " "){
-      fill(random(0, 225), random(0, 225), random(0, 225));
-    }
   }
 }
+
+function mousePressed(){
+  fill(random(0, 225), random(0, 225), random(0, 225));
+  rect(x - size / 2, y - size / 2, size, size);
+}
+
 
