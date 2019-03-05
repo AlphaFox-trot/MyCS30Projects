@@ -6,7 +6,7 @@ let x, y;
 let size;
 let movement;
 let hive;
-let location;
+//let location;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -15,7 +15,7 @@ function setup() {
   y = windowHeight / 2;
   size = 30;
   hive = 0;
-  location = [x, y];
+  //location = [x, y];
 }
 
 function draw() {
