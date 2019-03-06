@@ -8,17 +8,24 @@
 
 let timer;
 let state;
+let gDuration;
+let yDuration;
+let rDuration;
 
 function setup() {
   createCanvas(600, 600);
   state = 1;
+  timer = 0;
+  gDuration = 5000;
+  yDuration = 1500;
+  rDuration = 3500;
 }
 
 function draw() {
   background(255);
   drawOutlineOfLights();
-  timer = second();
   checkState();
+  changeState();
 }
 
 function drawOutlineOfLights() {
@@ -35,22 +42,32 @@ function drawOutlineOfLights() {
 }
 
 function checkState() {
-  if (timer === 0){
-    if (state === 1){
-      state = 2;
-      fill(0, 225, 0);
-      ellipse(width/2, height/2 - 65, 50, 50);
-    }
-    else if (state === 2){
-      state = 3;
-      fill(110, 110, 0);
-      ellipse(width/2, height/2, 50, 50);
-    }
-    else if (state === 3){
-      state = 1;
-      fill(225, 0, 0);
-      ellipse(width/2, height/2 + 65, 50, 50);
-    }
+  if (state === 1 && millis () > timer + gDuration){
+    state = 2;
+    timer = millis(); 
+  }
+  else if (state === 2 && millis () > timer + yDuration){
+    state = 3;
+    timer = millis(); 
+  }
+  else if (state === 3 && millis () > timer + rDuration){
+    state = 1;
+    timer = millis(); 
+  }
+}
+
+function changeState(){
+  if (state === 1){
+    fill(0, 225, 0);
+    ellipse(width/2, height/2 + 65, 50, 50);
+  }
+  else if (state === 2){
+    fill(225, 200, 50);
+    ellipse(width/2, height/2, 50, 50);
+  }
+  else if (state === 3){
+    fill(225, 0, 0);
+    ellipse(width/2, height/2 - 65, 50, 50);
   }
 }
 

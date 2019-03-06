@@ -6,7 +6,7 @@
 // use r g b y p and t to change your colour
 // use z and x to change the background
 // use c and v to change to white or black
-// use the mouse button to randomise your colour
+// use the mouse button to randomise your colour and place a square
 
 let x, y;
 let direction;
