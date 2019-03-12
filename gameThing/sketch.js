@@ -8,22 +8,23 @@ let ore, wood, wheat, stone;
 let rectX, rectY, rectWidth, rectHeight;
 
 function setup() {
-  createCanvas(1000, 1000);
-  background(220);
+  createCanvas(600, 600);
   view = "menu";
   mine = 0;
   forest = 1;
   farm = 1;
   quarry = 0;
   ore = 0;
-  rectX = width/2;
-  rectY = height/2;
+  rectX = 300;
+  rectY = 500;
   rectWidth = 400;
   rectHeight = 150;
 }
 
 function draw() {
+  background(220);
   if (view === "menu"){
+    rectMode(CENTER);
     fill (0, 225, 0);
     rect(rectX, rectY, rectWidth, rectHeight);
   }
@@ -33,7 +34,7 @@ function draw() {
   if (view === "field"){
     rectMode(CENTER);
     fill(0, 150, 0);
-    rect(windowWidth/2, windowHeight/2, windowWidth, windowHeight);
+    rect(300, 300, 600, 600);
   }
 }
 
@@ -45,7 +46,8 @@ function gatherResources(){
 }
 
 function mouseDown (){
-  if (mouseX >= rectX - rectWidth / 2 && mouseX < rectX + rectWidth/2 && mouseY >= rectY - rectHeight / 2 && mouseY < rectY + rectHeight/2){
+  if (view === "menu" && mouseX >= rectX - rectWidth / 2 && mouseX <= rectX + rectWidth / 2 && mouseY >= rectY - rectHeight / 2 && mouseY <= rectY + rectHeight / 2){
     view = "field";
+
   }
 }
