@@ -16,6 +16,9 @@ function setup() {
   farm = 1;
   quarry = 0;
   ore = 0;
+  wood = 0;
+  wheat = 0;
+  stone = 0;
   rectX = 300;
   rectY = 500;
   rectWidth = 400;
@@ -28,27 +31,26 @@ function draw() {
   background(220);
   if (mouseIsPressed && view === "menu" && mouseX >= rectX - rectWidth / 2 && mouseX <= rectX + rectWidth / 2 && mouseY >= rectY - rectHeight / 2 && mouseY <= rectY + rectHeight / 2){
     view = "field";
-    rectWidth = 100;
-    rectHeight = 100;
+    rectWidth = 150;
+    rectHeight = 150;
+  }
+  if (mouseIsPressed && view !== "menu" && mouseX >= rectX - rectWidth / 2 && mouseX <= rectX + rectWidth / 2 && mouseY >= rectY - rectHeight / 2 && mouseY <= rectY + rectHeight / 2){
+    if (view === "castle"){
+      view = "field";
+    }
+    if (view === "field"){
+      view = "castle";
+    }
   }
   if (view === "menu"){
     showButton();
   }
-  if (view !== "menu"){
-    if (mouseIsPressed && mouseX >= rectX - rectWidth / 2 && mouseX <= rectX + rectWidth / 2 && mouseY >= rectY - rectHeight / 2 && mouseY <= rectY + rectHeight / 2){
-      if (view === "castle"){
-        view = "feild";
-      }
-      else if (view === "feild"){
-        view = "castle";
-      }
-    }
-    if (view === "field"){
-      showFeild();
-    }
-    if (view === "castle"){
-      showCastle();
-    }
+  if (view === "field"){
+    showZone();
+    gatherResources();
+  }
+  if (view === "castle"){
+    showZone();
     gatherResources();
   }
 }
@@ -59,22 +61,23 @@ function showButton(){
   rect(rectX, rectY, rectWidth, rectHeight);
 }
 
-function showFeild(){
-  rectMode(CENTER);
-  fill(0, 150, 0);
-  rect(300, 300, 600, 600);
-  fill(150, 100, 50);
-  rect (300, 200, 50, 500);
-  fill (150);
-  rect(rectX, rectY, rectWidth, rectHeight);
-}
-
-function showCastle(){
-  rectMode(CENTER);
-  fill(150);
-  rect(300, 300, 600, 600);
-  fill (150, 100, 50);
-  rect(rectX, rectY, rectWidth, rectHeight);
+function showZone(){
+  if(view === "castle"){
+    rectMode(CENTER);
+    fill(150);
+    rect(300, 300, 600, 600);
+    fill (150, 100, 50);
+    rect(rectX, rectY, rectWidth, rectHeight);
+  }
+  if(view === "field"){
+    rectMode(CENTER);
+    fill(0, 150, 0);
+    rect(300, 300, 600, 600);
+    fill(150, 100, 50);
+    rect (300, 200, 50, 500);
+    fill (150);
+    rect(rectX, rectY, rectWidth, rectHeight);
+  }
 }
 
 function gatherResources(){
