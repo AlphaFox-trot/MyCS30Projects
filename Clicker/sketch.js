@@ -3,11 +3,11 @@
 // March 15
 
 let colour, name, chances;
-let level, area, menu, lives, cash, price;
+let level, area, menu, lives, cash, price, time;
 let timer;
 let listColours = ["red", "blue", "green", "yellow", "purple", "cyan"];
 let buttonX1, buttonX2, buttonY1, buttonY2;
-let startLevel, extraCash, extraLives;
+let extraTime, extraCash, extraLives;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -16,7 +16,7 @@ function setup() {
   buttonX2 = windowWidth/2;
   buttonY1 = windowHeight/3;
   buttonY2 = windowHeight/1.5;
-  startLevel = 1;
+  extraTime = 1;
   extraCash = 1;
   extraLives = 2;
   cash = 50;
@@ -30,7 +30,9 @@ function draw() {
   if (mouseIsPressed && menu === "main" && mouseX >= buttonX1 - 125 && mouseX <= buttonX1 + 125 && mouseY >= buttonY1 - 50 && mouseY <= buttonY1 + 50){
     menu = "play";
     lives = extraLives;
-    level = startLevel;
+    level = 0;
+    progress();
+    time = 1000;
   }
   if (mouseIsPressed && menu === "main" && mouseX >= buttonX2 - 125 && mouseX <= buttonX2 + 125 && mouseY >= buttonY2 - 50 && mouseY <= buttonY2 + 50){
     menu = "upgrades";
@@ -49,15 +51,39 @@ function keyPressed() {
   else if (menu === "play" && keyCode === RIGHT_ARROW && colour !== name) {
     progress();
   }
-  else{
+  else if (menu === "play"){
     lives--;
+    progress();
+  }
+  if (menu === "upgrades" && keyCode === 81 && price <= cash){
+    extraTime++;
+    cash = cash - price;
+    price = round(price * 2);
+  }
+  else if (menu === "upgrades" && keyCode === 87 && price <= cash){
+    extraCash++;
+    cash = cash - price;
+    price = round(price * 2);
+  }
+  else if (menu === "upgrades" && keyCode === 69 && price <= cash){
+    extraLives++;
+    cash = cash - price;
+    price = price + 20;
   }
 }
 
 function progress(){
   level ++;
   colour = random (listColours);
-  name = colour;
+  name = round(random(1, 3));
+  if (name === 1){
+    name = colour;
+  }
+  else{
+    name = random (listColours);
+  }
+  cash = cash + extraCash + level;
+  time = time + extraTime * 10;
 }
 
 function generateWords(){
@@ -71,13 +97,13 @@ function generateWords(){
     fill(0, 0, 225);
   }
   else if (colour === "yellow"){
-    fill(225, 225, 0);
+    fill(175, 175, 0);
   }
   else if (colour === "purple"){
     fill(225, 0, 225);
   }
   else if (colour === "cyan"){
-    fill(0, 225, 225);
+    fill(0, 175, 175);
   }
 }
 
@@ -89,41 +115,60 @@ function showMenu(){
     rect(buttonX1, buttonY1, 250, 100);
     rect(buttonX2, buttonY2, 250, 100);
     fill(0);
-    text("play", buttonX1, buttonY1);
-    text("upgrades", buttonX2, buttonY2);
-    text("you have " + chances + " chances left", 100, 50);
+    textAlign(CENTER);
+    text("Play", buttonX1, buttonY1);
+    text("Upgrades", buttonX2, buttonY2);
+    textAlign(LEFT);
+    text("You have " + chances + " chances left", 100, 50);
   }
   if (menu === "upgrades"){
     fill(10, 200, 10);
     rectMode(CENTER);
     rect(buttonX2, buttonY2, 250, 100);
     fill(0);
-    text("back", buttonX2, buttonY2);
-    text("push Q for a different starter level", 20, 50);
-    text("current starter level " + startLevel, 500, 50);
-    text("push W for more cash earnings", 20, 100);
-    text("current earnings " + extraCash, 500, 100);
-    text("push E for extra lives", 20, 150);
-    text("lives " + extraLives, 500, 150);
-    text("current cash " + cash, 50, 200);
+    textAlign(CENTER);
+    text("Back", buttonX2, buttonY2);
+    textAlign(LEFT);
+    text("Push Q for a more time", 20, 50);
+    text("Current time " + extraTime, 500, 50);
+    text("Push W for more cash earnings", 20, 100);
+    text("Current earnings " + extraCash, 500, 100);
+    text("Push E for extra lives", 20, 150);
+    text("Lives " + extraLives, 500, 150);
+    text("Current cash " + cash, 50, 200);
+    text("Next upgrade costs " + price, 50, 250);
   }
   if (menu === "play"){
     generateWords();
     textSize(64);
     text(name, windowWidth/2, windowHeight/2);
     fill(0);
-    text("lives" + lives, 50, 50); 
+    text("Lives" + lives, 50, 60); 
+    text("Current level " + level, 50, 120); 
+    text("time left " + time, 50, 180); 
     if (lives <= -1){
       menu = "main";
       chances--;
       lives = 0;
     }
+    time--;
+    if(time <= 0){
+      lives--;
+    }
   }
   if (chances <= 0){
     menu = "lose";
   }
+  if (level >= 100){
+    menu = "win";
+  }
   if (menu === "lose"){
-    text("you lose", 250, windowHeight/2);
+    textAlign(CENTER);
+    text("You Lose", 250, windowHeight/2);
+  }
+  if (menu === "win"){
+    textAlign(CENTER);
+    text("You Win", 250, windowHeight/2);
   }
 }
 
