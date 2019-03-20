@@ -2,7 +2,7 @@
 // Felix
 // March 15
 
-let colour, name;
+let colour, name, chances;
 let level, area, menu, lives, cash, price;
 let timer;
 let listColours = ["red", "blue", "green", "yellow", "purple", "cyan"];
@@ -21,6 +21,7 @@ function setup() {
   extraLives = 2;
   cash = 50;
   price = 10;
+  chances = 5;
 }
 
 function draw() {
@@ -28,6 +29,8 @@ function draw() {
   showMenu();
   if (mouseIsPressed && menu === "main" && mouseX >= buttonX1 - 125 && mouseX <= buttonX1 + 125 && mouseY >= buttonY1 - 50 && mouseY <= buttonY1 + 50){
     menu = "play";
+    lives = extraLives;
+    level = startLevel;
   }
   if (mouseIsPressed && menu === "main" && mouseX >= buttonX2 - 125 && mouseX <= buttonX2 + 125 && mouseY >= buttonY2 - 50 && mouseY <= buttonY2 + 50){
     menu = "upgrades";
@@ -84,13 +87,11 @@ function showMenu(){
     fill(10, 200, 10);
     rectMode(CENTER);
     rect(buttonX1, buttonY1, 250, 100);
-    fill(0);
-    text("play", buttonX1, buttonY1);
-    fill(10, 200, 10);
-    rectMode(CENTER);
     rect(buttonX2, buttonY2, 250, 100);
     fill(0);
+    text("play", buttonX1, buttonY1);
     text("upgrades", buttonX2, buttonY2);
+    text("you have " + chances + " chances left", 100, 50);
   }
   if (menu === "upgrades"){
     fill(10, 200, 10);
@@ -108,7 +109,21 @@ function showMenu(){
   }
   if (menu === "play"){
     generateWords();
+    textSize(64);
     text(name, windowWidth/2, windowHeight/2);
+    fill(0);
+    text("lives" + lives, 50, 50); 
+    if (lives <= -1){
+      menu = "main";
+      chances--;
+      lives = 0;
+    }
+  }
+  if (chances <= 0){
+    menu = "lose";
+  }
+  if (menu === "lose"){
+    text("you lose", 250, windowHeight/2);
   }
 }
 
