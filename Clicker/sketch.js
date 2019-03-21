@@ -2,10 +2,11 @@
 // Felix
 // March 15
 
-let colour, name, chances;
+let colour, name, chances, event, power;
 let level, area, menu, lives, cash, price, time;
 let timer;
 let listColours = ["red", "blue", "green", "yellow", "purple", "cyan"];
+let eventList = ["outtage",  "nothing"];
 let buttonX1, buttonX2, buttonY1, buttonY2;
 let extraTime, extraCash, extraLives;
 
@@ -45,30 +46,50 @@ function draw() {
 }
 
 function keyPressed() {
-  if (menu === "play" && keyCode === LEFT_ARROW && colour === name) {
-    progress();
-  } 
-  else if (menu === "play" && keyCode === RIGHT_ARROW && colour !== name) {
-    progress();
+  if (event === "inverted"){
+    if (menu === "play" && keyCode === RIGHT_ARROW && colour === name) {
+      progress();
+    } 
+    else if (menu === "play" && keyCode === LEFT_ARROW && colour !== name) {
+      progress();
+    }
+    else if (menu === "play"){
+      lives--;
+      progress();
+    }
   }
-  else if (menu === "play"){
-    lives--;
-    progress();
+  else if (event === "nothing"){
+    if (menu === "play" && keyCode === LEFT_ARROW && colour === name) {
+      progress();
+    } 
+    else if (menu === "play" && keyCode === RIGHT_ARROW && colour !== name) {
+      progress();
+    }
+    else if (menu === "play"){
+      lives--;
+      progress();
+    }
+  }
+  else if (event === "outtage"){
+    power++;
+    if (power >= 10){
+      progress();
+    }
   }
   if (menu === "upgrades" && keyCode === 81 && price <= cash){
     extraTime++;
     cash = cash - price;
-    price = round(price * 2);
+    price = price + 15;
   }
   else if (menu === "upgrades" && keyCode === 87 && price <= cash){
     extraCash++;
     cash = cash - price;
-    price = round(price * 2);
+    price = price + 15;
   }
   else if (menu === "upgrades" && keyCode === 69 && price <= cash){
     extraLives++;
     cash = cash - price;
-    price = price + 20;
+    price = price + 15;
   }
 }
 
@@ -76,6 +97,7 @@ function progress(){
   level ++;
   colour = random (listColours);
   name = round(random(1, 3));
+  event = random(eventList);
   if (name === 1){
     name = colour;
   }
@@ -97,13 +119,13 @@ function generateWords(){
     fill(0, 0, 225);
   }
   else if (colour === "yellow"){
-    fill(175, 175, 0);
+    fill(180, 180, 30);
   }
   else if (colour === "purple"){
     fill(225, 0, 225);
   }
   else if (colour === "cyan"){
-    fill(0, 175, 175);
+    fill(50, 180, 180);
   }
 }
 
@@ -139,21 +161,38 @@ function showMenu(){
     text("Next upgrade costs " + price, 50, 250);
   }
   if (menu === "play"){
-    generateWords();
-    textSize(64);
-    text(name, windowWidth/2, windowHeight/2);
-    fill(0);
-    text("Lives" + lives, 50, 60); 
-    text("Current level " + level, 50, 120); 
-    text("time left " + time, 50, 180); 
-    if (lives <= -1){
-      menu = "main";
-      chances--;
-      lives = 0;
+    if(event === "outtage"){
+      textAlign(CENTER);
+      text("Power Out", windowWidth/2, 100);
+      textAlign(LEFT);
+      rect(windowWidth, windowHeight, 50, power * 20);
     }
-    time--;
-    if(time <= 0){
-      lives--;
+    else{
+      generateWords();
+      rectMode(CENTER);
+      rect(windowWidth / 2, windowHeight / 2, 300, 300);
+      fill(0);
+      textSize(64);
+      textAlign(CENTER);
+      text(name, windowWidth/2, windowHeight/2);
+      textAlign(LEFT);
+      text("Lives" + lives, 50, 60); 
+      text("Current level " + level, 50, 120); 
+      text("time left " + time, 50, 180); 
+      if(event === "inverted"){
+        textAlign(CENTER);
+        text("Inverted Controlls", windowWidth/2, 100);
+        textAlign(LEFT);
+      }
+      if (lives <= -1){
+        menu = "main";
+        chances--;
+        lives = 0;
+      }
+      //time--;
+      if(time <= 0){
+        lives--;
+      }
     }
   }
   if (chances <= 0){
@@ -171,4 +210,3 @@ function showMenu(){
     text("You Win", 250, windowHeight/2);
   }
 }
-
